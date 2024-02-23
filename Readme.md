@@ -1,7 +1,5 @@
 # Ansible Documentation for Beginners
-```
 ### Written by Justin joseph, M.E., CSE, Opensource Evangelist. Mewije Info Technics, Thrissur, Kerala
-```
 
 
 **What is Ansible ?**
