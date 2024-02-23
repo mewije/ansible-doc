@@ -7,6 +7,35 @@ To put it in the simplest terms, Ansible lets you do things remotely that you wo
 
 For example, you can install (and maintain) a given version of a library on a select group of servers across your organization. You might want `Python 3.8` on all your Red Hat Enterprise Linux machines running in AWS. Ansible is perfect for that.
 
+```
+---
+- name: Install nginx
+  hosts: host.name.ip
+  become: true
+
+  tasks:
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install nginx
+    yum:
+      name: nginx
+      state: present
+
+  - name: Insert Index Page
+    template:
+      src: index.html
+      dest: /usr/share/nginx/html/index.html
+
+  - name: Start NGiNX
+    service:
+      name: nginx
+      state: started
+
+```
+
 I can think of four reasons why you, as a developer, should care about Ansible:
 
   - You can use it to set up small environments.
