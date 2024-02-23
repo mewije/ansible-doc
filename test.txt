@@ -1,4 +1,0 @@
-this is only for test
-This is the second line to commit
-This is the third line
-This is the foruth line
