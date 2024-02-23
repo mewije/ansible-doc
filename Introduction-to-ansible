@@ -6,3 +6,9 @@ Install Ansible.
 ```ruby
 pip install ansible
 ```
+
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+```
