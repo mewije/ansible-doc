@@ -76,6 +76,24 @@ Now you can ping the target servers to see whether they are online or not with t
 ```
 $ ansible -m ping all
 ```
+```
+[student@ansiblecontroller ~]$ ansible -m ping all
+192.168.1.42 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+192.168.1.41 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+```
+
 As you can see, the ping succeeded.
 
 > [!NOTE]
