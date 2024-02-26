@@ -1,14 +1,14 @@
-## Ansible Configuration File Precedence Order
+# Ansible Configuration File Precedence Order
 
 Ansible uses a specific precedence order to determine which configuration file (ansible.cfg) to use for its operations. Here is the order in which Ansible searches for the configuration file:
 
-# Current Directory:
+## Current Directory:
 Ansible first looks for the configuration file in the current directory where the command is executed (./ansible.cfg).
-# Home Directory:
+## Home Directory:
  If not found in the current directory, Ansible then searches for the configuration file in the home directory of the user executing the command (~/.ansible.cfg).
-# Environment Variable:
+## Environment Variable:
 Ansible will use the configuration file specified by the ANSIBLE_CONFIG environment variable if it is defined.
-# System-wide Configuration:
+## System-wide Configuration:
 Lastly, if none of the above are found, Ansible will fall back to the system-wide configuration file located at /etc/ansible/ansible.cfg.
 
 To list all Configurations

@@ -11,11 +11,11 @@ So first, you have to enable epel repository in CentOS 7. The easiest way to do 
 Install epel-release package with the following command:
 
 ```
-$ sudo yum install epel-release
+$ sudo yum install epel-release -y
 ```
 Now you can install Ansible with the following command:
 ```
-$ sudo yum install ansible
+$ sudo yum install ansible -y
 ```
 Now check that Ansible is installed with the following command:
 ```
