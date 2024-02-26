@@ -18,7 +18,7 @@ YAML is a widely used format for writing configuration files for different DevOp
 ## XML VS JSON VS YAML - What's The Difference?
 XML, JSON, and YAML are all used for creating configuration files and transferring data between applications.
 
-# XML, which stands for Extensible Markup Language
+### XML, which stands for Extensible Markup Language
 ```
 <Employees>
     <Employee>
@@ -33,7 +33,7 @@ XML, JSON, and YAML are all used for creating configuration files and transferri
     </Employee>
 </Employees>
 ```
-# JSON Stands for JavaScript Object Notation
+### JSON Stands for JavaScript Object Notation
 ```
 {
 	"Employees": [
@@ -52,7 +52,7 @@ XML, JSON, and YAML are all used for creating configuration files and transferri
 }
 ```
 
-## YAML Yet Another Markup Language, now stands for YAML Ain't Markup Language.
+### YAML Yet Another Markup Language, now stands for YAML Ain't Markup Language.
 ```
 Employees:
 - name: John Doe
@@ -78,6 +78,7 @@ YAML *doesn't* allow you to use any tabs when creating indentation - use spaces 
 # Write A Comment in YAML
 To add a comment to comment out a line of code, use the # character:
 ```
+---
 #Employees in my Company
 Employees:
 - name: John Doe
@@ -89,3 +90,77 @@ Employees:
 ```
 
 > [!NOTE]Please Convert JSON to YAML online https://www.json2yaml.com/
+
+# Key-value Pair
+```
+---
+Fruit: Apple
+Vegetable: Carrot
+Liquid: water
+Meat: chicken
+```
+# Array/Lists
+Dictionary is an ordered Collections
+```
+---
+- vegetables
+- rice
+- meat
+- beverages
+```
+# Dictionary
+Dictionary is an unordered Collections
+```
+---
+vegetables:
+	banana:
+  grapes:
+rice:
+	biriyani:
+meat:
+	mutton:
+beverages:
+	icecream:
+```
+
+# Dictionary in Dictionary
+
+```
+---
+color: Blue
+Model:
+	Name: Ford
+  year: 1995
+```
+# Lists of Dictionary [starts with -]
+```
+---
+- color: Blue
+	Model:
+		Name: Ford
+  	year: 1995
+  Transition: Manual
+  Prize: $20,000
+
+- color: grey
+	Model:
+		Name: benz
+  	year: 1995
+  Transition: Manual
+  Prize: $30,000
+	```
+
+# Array of Lists
+```
+---
+Fruit:
+- Apple
+-	Orange
+Vegetable:
+- Carrot
+Liquid: water
+Meat:
+- chicken
+- Mutton
+
+```
