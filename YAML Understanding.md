@@ -89,7 +89,7 @@ Employees:
   country: USA
 ```
 
-> [!NOTE]Please Convert JSON to YAML online https://www.json2yaml.com/
+>[!NOTE]Please Convert JSON to YAML online https://www.json2yaml.com/
 
 # Key-value Pair
 ```
@@ -148,7 +148,7 @@ Model:
   	year: 1995
   Transition: Manual
   Prize: $30,000
-	```
+```
 
 # Array of Lists
 ```
@@ -162,5 +162,4 @@ Liquid: water
 Meat:
 - chicken
 - Mutton
-
 ```
