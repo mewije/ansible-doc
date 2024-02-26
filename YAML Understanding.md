@@ -113,14 +113,10 @@ Dictionary is an unordered Collections
 ```
 ---
 vegetables:
-	banana:
-  grapes:
 rice:
-	biriyani:
+biriyani:
 meat:
-	mutton:
 beverages:
-	icecream:
 ```
 
 # Dictionary in Dictionary
