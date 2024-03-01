@@ -44,7 +44,7 @@ For example, to search for more details about the yum module run:
 ```
 ansible-doc yum
 ```
-# Managing Packages / Services with Ansible
+# Managing Packages
 Ansible adhoc commands can be used for the installation and removal of packages using yum and apt package managers.
 
 To install Apache web server on the CentOS 7 host under webservers group in the inventory file run the command:
@@ -77,20 +77,40 @@ For example to run **df -Th** as ansible user on the remote hosts and prompt for
 ```
 ansible all -m shell -a 'df -Th' --become-user ansible -K
 ```
+Install ```httpd``` in webserver groups
+```
+ansible webservers -m yum -a "name=httpd  state=present --become -K"
+```
+ # Service Management with Ansible - ```service```
+ To start a Service using ansible run
+ ```
+ ansible -i inventory -m service -a "name=httpd  state=started" webserver --become -K
+ ```
+To enable a service while Starting
+```
+ansible -i inventory -m service -a "name=httpd  state=started enabled=true" dbserver --become -K
+```
+To stop the service
+```
+ansible -i inventory -m service -a "name=httpd  state=stopped enabled=true" dbserver --become -K
+```
 
 # Creating Users and Groups Using Ansible
-When creating users, the ‘user‘ module comes in handy. To create a new user james with password redhat on the client system database_server, issue the command.
+When creating users, the ‘user‘ module comes in handy. To create a new user student on the client system webserver, issue the command.
 ```
-ansible database_server -m user -a "name=james password=redhat"
+ansible -i inventory webserver -m user -a "name=student state=present createhome=yes" --become -K
 ```
 To confirm the creation of the new user, run the command:
 ```
-ansible database_servers -a "id james"
+ansible -i inventory webserver -a "id student"
+or
+ansible -i inventory webserver -a "tail /etc/passwd"
 ```
 To remove the user, run the command:
 ```
-ansible database_servers -m user -a "name=james state=absent"
+ansible -i inventory webserver -m user -a "name=student state=absent"
 ```
+
 # Gathering Facts about Host Systems
 Facts refer to detailed information about a system. This includes information about the IP address, system architecture, memory, and CPU to mention a few.
 
