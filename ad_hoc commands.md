@@ -18,7 +18,7 @@ The most basic usage of Ansible-Adhoc commands is pinging a host or a group of h
 ```
 ansible -m ping all
 ```
-In the above command, the ```-m``` parameter is the module option. Ping is the adhoc command and the second parameter all represents all hosts in the inventory file. The output of the command is shown below:
+In the above command, the ```-m``` parameter is the module option. Ping is the adhoc command and the second parameter ```all``` represents all hosts in the inventory file. The output of the command is shown below:
 
 To ping, a particular group of hosts, replace ‘all’ parameter with the group name. In the example below, we are testing connectivity with hosts under the webservers group.
 ```
