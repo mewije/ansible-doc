@@ -93,7 +93,9 @@ For example:
 target_node1   ansible_host=198.168.1.51
 target_node2   ansible_host=198.168.1.52
 ```
+For instance, in the previous section we used the *ansible_host* variable that simply told Ansible where to search for the IP address of a managed node.
 Then verify the inventory list to check if the nodes are referenced by aliases.
+
 ```
 ansible-inventory -i project_dir/inventory --list
 ansible -i inventory -m ping target_node1
@@ -103,7 +105,13 @@ ansible -i project_dir/inventory -m setup webservers -a "filter=*ipv4"
 
 ```
 
+In inventory files you can use variables to define hostnames, connection type, ports, etc. In the example below, we have gone a step further to define the user used to initiate the remote connection to the nodes.
 
+In this case, we have two variables: ansible_host that specifies the IP of the hosts, and ansible_user that specifies the user used to connect with the remote hosts.
+```
+target_node1 ansible_host=198.168.1.51 ansible_user=root
+target_node2 ansible_host=198.168.1.52 ansible_user=ansible
+```
 # Organize Nodes Into Groups and Sub-groups
 For a cleaner inventory file and easier management of your managed nodes, it is usually recommended to organize them into groups and subgroups.
 
