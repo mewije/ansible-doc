@@ -16,62 +16,131 @@ In the above YAML code snippet, **-name** and **yum** are modules.
 An ansible play is a script or an instruction that defines the task to be carried out on a server. A collection of plays constitute a playbook. *In other words, a playbook is a collection of multiple plays*, each of which clearly stipulates the task to be carried out on a server. Plays exist in YAML format.
 
 The objective of this subtopic is to give you an overview of various tasks that can be accomplished by Ansible modules.
+Playbook: A single YAML file.
+  Play: Defines a set of activities (tasks) to be run on host.
+    Task:  An action to be performed on the host
+     - Execute a command
+     - Run a script
+     - Install a Package
+     - Shutdown/Restart
 
-# 1) Package Management in Linux
-Package management is one of the most essential and frequent tasks carried by systems administrators. Ansible ships with modules that help you execute package management tasks both in RedHat and Debian based systems.
-
-For instance, you can have a playbook file to install the Apache webserver on CentOS 7 and call it httpd.yml.
-
-# Example 1: Installing the Apache Webserver on CentOS7
-
-To create the playbook run the command, ```touch playbook_name.yml```
-
-For example to create a playbook called httpd, run the command.
+# Lab 1:
+ Execute a date command on localhost
 ```
-touch httpd.yml
-```
- A YAML file begins with 3 hyphens as shown. Inside the file, add the following instructions.
- ```
- ---
-- name: This installs and starts Apache webserver
-  hosts: webservers
+---
+- name: 'Execute a date command on localhost'
+  hosts: localhost
+  become: yes
   tasks:
-    - name: Install Apache Webserver
-      yum:   
-        name: httpd
-        state: latest
+     - name: 'Execute a date command'
+       command: date
 ```
-The above playbook installs Apache web server on remote systems defined as webservers in the inventory file.
+```
+ansible-playbook -i inventory playbook.yaml
+```
 
-# Service Module
-The service module allows system administrators to start, stop, update, upgrade and reload services on the system.
-
-Example 1: Starting Apache Webserver
+# lab 2:
+ Update the playbook yaml file to add a task **name** "Task to display hosts file for the existing task."
 ```
 ---
-- name: Start service httpd, if not started
-  service:
-    name: httpd
-    state: started
+- name: 'Execute a command to display hosts file on localhost'
+  hosts: localhost
+  become: yes
+  tasks:
+     - name: 'Task to display hosts file'
+       command: 'cat /etc/hosts'
 ```
-Example 2: Stopping Apache Webserver
+Run the playbook.
+
+# Lab 3:
+ Now update it to add another task. The new task must execute the command cat /etc/resolv.conf and set its name to Task to display nameservers.
 ```
 ---
-- name: Stop service httpd
-  service:
-    name: httpd
-    state: stopped
+- name: 'Execute two commands on localhost'
+  hosts: localhost
+  become: yes
+  tasks:
+     - name: 'Execute a date command'
+       command: date
+     - name: 'Task to display nameservers'
+       command: 'cat /etc/resolv.conf'
 ```
-Example 3: Restarting a Network Interface enp2s0
+
+# Lab 4.
+ So far, we have been running all tasks on localhost. We would now like to run these tasks on target nodes. this host is already defined in inventory file. Update the playbook to run the tasks on the target1 host.
+```
+---
+- name: 'Execute two commands on webserver'
+  hosts: webserver
+  tasks:
+     - name: 'Execute a date command'
+       command: date
+     - name: 'Execute a command to display hosts file'
+       command: 'cat /etc/hosts'
+```
+Run the playbook. ```ansible-playbook -i inventory playbook.yaml```
+
+# Lab 5
+Update the playbook.yaml to add a new play named Execute a command on dbserver, and a task under it to execute cat /etc/hosts command on dbserver host, name the task Task to display hosts file on node02.
+```
+---
+- name: 'Execute two commands on node01'
+  hosts: node01
+  become: yes
+  tasks:
+    - name: 'Execute a date command'
+      command: date
+    - name: 'Task to display hosts file on node01'
+      command: 'cat /etc/hosts'
+- name: 'Execute a command on node02'
+  hosts: node02
+  become: yes
+  tasks:
+     - name: 'Task to display hosts file on node02'
+       command: 'cat /etc/hosts'
+```
+
+# Lab 6
+Install apache in webserver groups
+```
+---
+- name: 'Intro to ansible playbook'
+  hosts: webserver
+  tasks:
+   - name: 'Install httpd webserver service in target_nodes'
+     yum:
+       name: httpd
+       state: latest
+```
+# Lab 7
+update the playbook to enabled the httpd service
+```
+---
+- name: 'Intro to ansible playbook'
+  hosts: webserver
+  tasks:
+   - name: 'Install httpd webserver service in target_nodes'
+     yum:
+       name: httpd
+       state: latest
+   - name: 'Start the httpd service'
+     service:
+       name: httpd
+       state: restarted
+```
+
+# Lab 8:
+Restarting a Network Interface enp2s0
 ```
 ---
 - name: Restart network service for interface eth0
   service:
     name: network
     state: restarted
-    args: enp2s0
+    args: enp3s0
 ```
-# Copy Module
+
+# Lab 9 - Copy Module
 As the name suggests, copy module copies files from one location on the remote machine to a different location on the same machine.
 
 Example 1: Copying Files from Local to Remote Linux
@@ -98,7 +167,7 @@ Example 2: Copying Files from Local to Remote Linux
 ```
 The permissions in the previous examples can be represented as shown in the last line, The user is assigned read and write permissions, the group is assigned write permissions, and the rest of the world is assigned read permissions.
 
-# File Module
+# Lab 10 - File Module
 The file module is used to carry many file operations including creating files & directories, assigning file permissions, and setting symlinks.
 
 Example 1: Perform Linux File Permissions
@@ -133,7 +202,7 @@ Example 3: Create a Directory
 ```
 This will create a directory in the /etc directory setting permissions to 0777.
 
-# Lineinfile Module
+# Lab 11 Lineinfile Module
 The lineinfile module is helpful when you want to change a single line in a file. It can replace an existing line.
 
 Example 1: Alter Files in Linux
@@ -158,7 +227,7 @@ Example 2: Manipulate Files in Linux
 ```
 The play above sets SELINUX value to disabled.
 
-# Archive Module
+# Lab 11 - Archive Module
 An Archive module is used for the creation of a compressed archive of a single or multiple files. It assumes the compression source exists is present on the target destination. After archival, the source file can later be deleted or removed using the statement **remove=True**.
 
 Example 1: Create a Archive File
@@ -181,13 +250,13 @@ In the above play, the source file /path/to/db_dir is deleted after the archival
 
 Example 3: Create a Archive File
 ```
-- name: Create a bz2 archive of /path/to/tecmint
+- name: Create a bz2 archive of /path/to/db_dir
   archive:
-    path: /path/to/tecmint
+    path: /path/to/db_dir
     format: bz2
 ```
 
-# Command Module
+# Lab 13 - Command Module
 One of the most commonly used modules, the command module takes the command name and later followed by a list of arguments. The command is a passed the same way that you’d type in a Linux shell.
 
 Example 1: Run a Command
@@ -209,3 +278,4 @@ Example 2: Check Uptime of Remote Linux
 - debug:
           var: uptimeoutput.stdout_lines
 ```
+The command module retrieves the uptime of remote servers.
