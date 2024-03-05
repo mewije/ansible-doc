@@ -16,6 +16,7 @@ In the above YAML code snippet, **-name** and **yum** are modules.
 An ansible play is a script or an instruction that defines the task to be carried out on a server. A collection of plays constitute a playbook. *In other words, a playbook is a collection of multiple plays*, each of which clearly stipulates the task to be carried out on a server. Plays exist in YAML format.
 
 The objective of this subtopic is to give you an overview of various tasks that can be accomplished by Ansible modules.
+```
 Playbook: A single YAML file.
   Play: Defines a set of activities (tasks) to be run on host.
     Task:  An action to be performed on the host
@@ -23,6 +24,7 @@ Playbook: A single YAML file.
      - Run a script
      - Install a Package
      - Shutdown/Restart
+```
 
 # Lab 1:
  Execute a date command on localhost
