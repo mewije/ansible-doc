@@ -92,6 +92,151 @@ vars:
        id: 10
        port: 2
 ```
+# 2. Special Variables
+Ansible provides a list of predefined variables that can be referenced in Jinja2 templates and playbooks but cannot be altered or defined by the user.
+
+Collectively, the list of Ansible predefined variables is referred to as Ansible facts and these are gathered when a playbook is executed.
+
+To get a list of all the Ansible variables, use the setup module in the Ansible ad-hoc command as shown below:
+
+```ansible -m setup hostname
+```
+This displays the output in JSON format as shown:
+From the output, we can see that some of the examples of Ansible special variables include:
+```
+ansible_architecture
+ansible_bios_date
+ansible_bios_version
+ansible_date_time
+ansible_machine
+ansible_memefree_mb
+ansible_os_family
+ansible_selinux
+```
+
+There are many other Ansible special variables these are just a few examples.
+
+These variables can be used in a Jinja2 template as shown:
+```
+<html>
+<center>
+   <h1> The hostname of this webserver is {{ ansible_hostname }}</h1>
+   <h3> It is running on {{ ansible_os_family}}system </h3>
+</center>
+</html>
+```
+# 3. Inventory Variables
+Lastly, on the list, we have Ansible inventory variables. An inventory is a file in INI format that contains all the hosts to be managed by Ansible.
+
+In inventories, you can assign a variable to a host system and later use it in a playbook.
+```
+[web_servers]
+
+web_server_1 ansible_user=centos http_port=80
+web_server_2 ansible_user=ubuntu http_port=8080
+```
+The above can be represented in a playbook YAML file as shown:
+```
+---
+   web_servers:
+     web_server_1:
+        ansible_user=centos
+	   http_port=80
+
+     web_server_2:
+        ansible_user=ubuntu
+	   http_port=8080
+```
+If the host systems share the same variables, you can define another group in the inventory file to make it less cumbersome and avoid unnecessary repetition.
+
+For example:
+```
+[web_servers]
+
+web_server_1 ansible_user=centos http_port=80
+web_server_2 ansible_user=centos http_port=80
+```
+The above can be structured as:
+```
+[web_servers]
+web_server_1
+web_server_2
+
+
+[web_servers:vars]
+ansible_user=centos
+http_port=80
+```
+And in the playbook YAML file, this will be defined as shown:
+
+```
+---
+   web_servers:
+
+     hosts:
+       web_server_1:
+	     web_server_2:
+
+     vars:
+        ansible_user=centos
+        http_port=80
+```
+
+# 4. Ansible Facts
+***TASK:  [Gathering facts] *********
+When running playbooks, the first task that Ansible does is the execution of setup task. I’m pretty sure that you must have come across the output:
+
+Ansible facts are nothing but system properties or pieces of information about remote nodes that you have connected to. This information includes the System architecture, the OS version, BIOS information, system time and date, system uptime, IP address, and hardware information to mention just a few.
+
+To get the facts about any system simply use the setup module as shown in the command below:
+
+```
+ansible -m setup <hostname>
+```
+This prints out a large set of data in JSON format.
+
+# Custom Facts
+Did you also know that you can create your own custom facts that can be gathered by Ansible? Yes, you can. So how do you go about it? Let’s shift gears and see how.
+
+The first step is to create a /etc/ansible/facts.d directory on the managed or remote node.
+
+Inside this directory, create a file(s) with a .fact extension. This file(s) will return JSON data when the playbook is run on the Ansible control node, which is inclusive of the other facts that Ansible retrieves after a playbook run.
+
+Here’s an example of a custom fact file called date_time.fact that retrieves date and time.
+
+```
+# mkdir -p /etc/ansible/facts.d
+# vim /etc/ansible/facts.d/date_time.fact
+```
+Add the following lines in it.
+```
+#!/bin/bash
+DATE=`date`
+echo "{\"date\" : \"${DATE}\"}"
+```
+Save and exit the file.
+
+Now assign the execute permissions:
+```
+# chmod +x /etc/ansible/facts.d/date_time.fact
+```
+Now, I created a playbook on Ansible control node called check_date.yml.
+```
+---
+
+- hosts: webservers
+
+  tasks:
+   - name: Get custom facts
+     debug:
+      msg: The custom fact is {{ansible_local.date_time}}
+```
+Now run the playbook and observe Ansible retrieving information saved on the fact file:
+```
+# ansible_playbook check_date.yml
+
+```
+
 
 # Lab 1:
 
