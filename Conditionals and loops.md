@@ -1,8 +1,9 @@
-Use Conditionals to Control Play Execution
+#Use Conditionals to Control Play Execution
 Just like in programming languages, conditional statements are used when more than one outcome is possible. Let’s have a look at some of the commonly used conditional statements in Ansible playbooks.
 #When statement
 Sometimes, you may want to perform tasks on specific nodes and not others. The 'when' conditional statement is quite easy to use and implement in a playbook. When using the 'when' clause simply declare the condition adjacent to the clause as shown:
-```when: condition
+```
+when: condition
 ```
 When the condition is satisfied, then the task is performed on the remote system.
 
@@ -72,11 +73,11 @@ In the playbook below, we have an array called packages containing a list of pac
     • name: Install “{{ item.name }}”on Debian
     apt:
     name: “{{ item.name }}”
-    state: present 
+    state: present
     When: item.required == True
     loop: “{{ packages }}”
 ```
-Lab 1:
+#Lab 1:
 There is a playbook named nginx.yaml under playbooks directory. It is starting nginx service on all hosts defined in  inventory file.
 ```
 ---
@@ -98,7 +99,7 @@ Solution:
         when: 'ansible_host=="node02"'
 ```
 
-Lab 02:
+#Lab 02:
 The playbook under playbooks/age.yaml , has a variable defined called age. The two tasks attempt to print if I am a child or an Adult.
 
 ```
@@ -131,7 +132,7 @@ Solution:
       command: 'echo "I am an Adult"'
       when: 'age >= 18'
 ```
-Lab 3:
+#Lab 03:
 Playbook /home/bob/playbooks/nameserver.yaml attempts to add an entry in /etc/resolv.conf file to add a new nameserver.
 
 ```
