@@ -1,3 +1,81 @@
+Use Conditionals to Control Play Execution
+Just like in programming languages, conditional statements are used when more than one outcome is possible. Let’s have a look at some of the commonly used conditional statements in Ansible playbooks.
+#When statement
+Sometimes, you may want to perform tasks on specific nodes and not others. The 'when' conditional statement is quite easy to use and implement in a playbook. When using the 'when' clause simply declare the condition adjacent to the clause as shown:
+```when: condition
+```
+When the condition is satisfied, then the task is performed on the remote system.
+
+Let’s check out a few examples:
+Example 1: Using When Operator
+```
+---
+- hosts: all
+
+  tasks:
+  - name: Install Nginx on Debian
+     apt: name=nginx state=present
+     when: ansible_os_family == “Debian”
+```
+The play above installs Nginx webserver on hosts running the Debian family of distros.
+
+You can also use the OR and AND operator alongside the when the conditional statement.
+
+Example 2: Using AND Operator with When
+```
+---
+- hosts: all
+
+  tasks:
+  - name: Install Nginx on Debian
+     apt: name=nginx state=present
+     when: ansible_os_family == “Debian” and
+           ansible_distribution_version == “18.04”
+```
+When using the AND operator, both statements must be satisfied for the task to be executed.
+
+The play above installs Nginx on Nodes running a Debian family of OS which is version 18.04. Obviously, this will be Ubuntu 18.04.
+
+Example 3: Using OR Operator with When
+With OR operator, the task is executed if either of the conditions is fulfilled.
+```
+---
+- hosts: all
+
+  tasks:
+  - name: Install Nginx on Debian
+     apt: name=nginx state=present
+     when: ansible_os_family == “Debian” or
+	      Ansible_os_family == “SUSE”
+```
+The play above installs Nginx webservers on either Debian or SUSE family of OS or both of them.
+
+NOTE: Always ensure to use the double equality sign == when testing a condition.
+
+#Conditionals in loops
+Conditionals can also be used in a loop. Say for instance you have a list of multiple packages that need to be installed on remote nodes.
+
+In the playbook below, we have an array called packages containing a list of packages that need to be installed. These tasks will be carried out one after the other if the required clause is set to True.
+```
+---
+ - name: Install Software packages
+   hosts: all
+   vars:
+	 packages:
+    • name: nginx
+      required: True
+    • name: mysql
+      required: True
+    • name: apache
+      required: False
+   tasks:
+    • name: Install “{{ item.name }}”on Debian
+    apt:
+    name: “{{ item.name }}”
+    state: present 
+    When: item.required == True
+    loop: “{{ packages }}”
+```
 Lab 1:
 There is a playbook named nginx.yaml under playbooks directory. It is starting nginx service on all hosts defined in  inventory file.
 ```
