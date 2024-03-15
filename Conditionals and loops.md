@@ -78,16 +78,16 @@ In the playbook below, we have an array called packages containing a list of pac
     loop: “{{ packages }}”
 ```
 # Lab 1:
-There is a playbook named nginx.yaml under playbooks directory. It is starting nginx service on all hosts defined in  inventory file.
+There is a playbook named httpd.yaml under playbooks directory. It is starting httpd service on all hosts defined in  inventory file.
 ```
 ---
 -  name: 'Execute a script on all web server nodes'
    hosts: all
    become: yes
    tasks:
-     -  service: 'name=nginx state=started'
+     -  service: 'name=httpd state=started'
 ```
-Use the when condition to run this task only on target_node2 host.
+Use the when condition to run this task only on target_node2(192.168.1.51) host.
 Solution:
 ```
 ---
@@ -95,8 +95,12 @@ Solution:
    hosts: all
    become: yes
    tasks:
-     -  service: 'name=nginx state=started'
-        when: 'ansible_host=="node02"'
+     -  service: 'name=httpd state=started'
+        when: 'ansible_host=="192.168.1.51"'
+```
+Run the Playbook
+```
+ansible-playbook -i inventory httpd.yaml -b -K
 ```
 
 # Lab 02:
@@ -133,7 +137,7 @@ Solution:
       when: 'age >= 18'
 ```
 # Lab 03:
-Playbook /home/bob/playbooks/nameserver.yaml attempts to add an entry in /etc/resolv.conf file to add a new nameserver.
+Playbook nameserver.yaml attempts to add an entry in /etc/resolv.conf file to add a new nameserver.
 
 ```
 ---
