@@ -101,7 +101,7 @@ Liquid: water
 Meat: chicken
 ```
 # Array/Lists
-Dictionary is an ordered Collections
+List is an ordered Collections
 ```
 ---
 - vegetables
